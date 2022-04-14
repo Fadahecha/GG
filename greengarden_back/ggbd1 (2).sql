@@ -2,10 +2,10 @@
 -- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Mar 15, 2022 at 01:43 PM
--- Server version: 10.4.22-MariaDB
--- PHP Version: 8.1.2
+-- Hôte : 127.0.0.1
+-- Généré le : jeu. 14 avr. 2022 à 09:17
+-- Version du serveur : 10.4.22-MariaDB
+-- Version de PHP : 8.1.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,15 +18,19 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `ggbd1`
+-- Base de données : `ggbd1`
 --
 
 DELIMITER $$
 --
--- Procedures
+-- Procédures
 --
 CREATE DEFINER=`root`@`localhost` PROCEDURE `delai_moyen` ()  BEGIN
 
+SELECT AVG(DATEDIFF(facture_date, commande_date)) as moyenne FROM facture, commande WHERE commande.id_commande = facture.id_commande;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `delai_moyens` ()  BEGIN
 SELECT AVG(DATEDIFF(facture_date, commande_date)) as moyenne FROM facture, commande WHERE commande.id_commande = facture.id_commande;
 END$$
 
@@ -35,7 +39,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `affecte`
+-- Structure de la table `affecte`
 --
 
 CREATE TABLE `affecte` (
@@ -46,7 +50,7 @@ CREATE TABLE `affecte` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `appartient`
+-- Structure de la table `appartient`
 --
 
 CREATE TABLE `appartient` (
@@ -57,7 +61,7 @@ CREATE TABLE `appartient` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `categorie`
+-- Structure de la table `categorie`
 --
 
 CREATE TABLE `categorie` (
@@ -67,7 +71,7 @@ CREATE TABLE `categorie` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `categorie`
+-- Déchargement des données de la table `categorie`
 --
 
 INSERT INTO `categorie` (`categorie_id`, `categorie_nom`, `categorie_id_1`) VALUES
@@ -77,7 +81,7 @@ INSERT INTO `categorie` (`categorie_id`, `categorie_nom`, `categorie_id_1`) VALU
 (4, 'arbuste', 4),
 (5, 'frutier', 4),
 (6, 'ornemental', 4),
-(7, 'Produits d\'entretien', 7),
+(7, 'Produits entretien', 7),
 (8, 'automatise', 7),
 (9, 'a main', 7),
 (10, 'engrais', 7);
@@ -85,7 +89,7 @@ INSERT INTO `categorie` (`categorie_id`, `categorie_nom`, `categorie_id_1`) VALU
 -- --------------------------------------------------------
 
 --
--- Table structure for table `client`
+-- Structure de la table `client`
 --
 
 CREATE TABLE `client` (
@@ -105,7 +109,7 @@ CREATE TABLE `client` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `client`
+-- Déchargement des données de la table `client`
 --
 
 INSERT INTO `client` (`id_client`, `client_nom`, `client_prenom`, `client_sexe`, `client_adresse`, `client_ville`, `client_telephone`, `newsletter`, `client_codp`, `client_categorie`, `adresse_liv_client`, `id_commercial`, `id_coefficiant`) VALUES
@@ -133,25 +137,7 @@ INSERT INTO `client` (`id_client`, `client_nom`, `client_prenom`, `client_sexe`,
 -- --------------------------------------------------------
 
 --
--- Table structure for table `coefficiant`
---
-
-CREATE TABLE `coefficiant` (
-  `id_coefficiant` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `coefficiant`
---
-
-INSERT INTO `coefficiant` (`id_coefficiant`) VALUES
-(1),
-(2);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `commande`
+-- Structure de la table `commande`
 --
 
 CREATE TABLE `commande` (
@@ -164,7 +150,7 @@ CREATE TABLE `commande` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `commande`
+-- Déchargement des données de la table `commande`
 --
 
 INSERT INTO `commande` (`id_commande`, `commande_date`, `total_HT`, `total_TTC`, `commande_status`, `id_client`) VALUES
@@ -203,7 +189,7 @@ INSERT INTO `commande` (`id_commande`, `commande_date`, `total_HT`, `total_TTC`,
 -- --------------------------------------------------------
 
 --
--- Table structure for table `commande_ligne`
+-- Structure de la table `commande_ligne`
 --
 
 CREATE TABLE `commande_ligne` (
@@ -215,7 +201,7 @@ CREATE TABLE `commande_ligne` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `commande_ligne`
+-- Déchargement des données de la table `commande_ligne`
 --
 
 INSERT INTO `commande_ligne` (`produit_id`, `id_commande`, `qte`, `total_ht`, `total_ttc`) VALUES
@@ -254,7 +240,7 @@ INSERT INTO `commande_ligne` (`produit_id`, `id_commande`, `qte`, `total_ht`, `t
 -- --------------------------------------------------------
 
 --
--- Table structure for table `commercial`
+-- Structure de la table `commercial`
 --
 
 CREATE TABLE `commercial` (
@@ -263,7 +249,7 @@ CREATE TABLE `commercial` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `commercial`
+-- Déchargement des données de la table `commercial`
 --
 
 INSERT INTO `commercial` (`id_commercial`, `commercial_nom`) VALUES
@@ -276,7 +262,7 @@ INSERT INTO `commercial` (`id_commercial`, `commercial_nom`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `contient`
+-- Structure de la table `contient`
 --
 
 CREATE TABLE `contient` (
@@ -287,31 +273,7 @@ CREATE TABLE `contient` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `declanche`
---
-
-CREATE TABLE `declanche` (
-  `facture_id` int(11) NOT NULL,
-  `id_livraison` int(11) NOT NULL,
-  `facture_date` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `determine`
---
-
-CREATE TABLE `determine` (
-  `id_livraison` int(11) NOT NULL,
-  `id_commande` int(11) NOT NULL,
-  `commande_date` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `existe`
+-- Structure de la table `existe`
 --
 
 CREATE TABLE `existe` (
@@ -322,7 +284,7 @@ CREATE TABLE `existe` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `facture`
+-- Structure de la table `facture`
 --
 
 CREATE TABLE `facture` (
@@ -336,7 +298,7 @@ CREATE TABLE `facture` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `facture`
+-- Déchargement des données de la table `facture`
 --
 
 INSERT INTO `facture` (`facture_id`, `facture_date`, `adresse_fact`, `reduction`, `statut_solde`, `id_client`, `id_commande`) VALUES
@@ -354,7 +316,7 @@ INSERT INTO `facture` (`facture_id`, `facture_date`, `adresse_fact`, `reduction`
 -- --------------------------------------------------------
 
 --
--- Table structure for table `fournisseur`
+-- Structure de la table `fournisseur`
 --
 
 CREATE TABLE `fournisseur` (
@@ -364,7 +326,7 @@ CREATE TABLE `fournisseur` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `fournisseur`
+-- Déchargement des données de la table `fournisseur`
 --
 
 INSERT INTO `fournisseur` (`fournisseur_id`, `fournisseur_nom`, `fournisseur_categorie`) VALUES
@@ -382,19 +344,20 @@ INSERT INTO `fournisseur` (`fournisseur_id`, `fournisseur_nom`, `fournisseur_cat
 -- --------------------------------------------------------
 
 --
--- Table structure for table `livraison`
+-- Structure de la table `livraison`
 --
 
 CREATE TABLE `livraison` (
   `id_livraison` int(11) NOT NULL,
   `livraison_date` date NOT NULL,
-  `adresse_liv` varchar(50) NOT NULL
+  `adresse_liv` varchar(50) NOT NULL,
+  `id_commande` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `passe`
+-- Structure de la table `passe`
 --
 
 CREATE TABLE `passe` (
@@ -405,7 +368,7 @@ CREATE TABLE `passe` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `produit`
+-- Structure de la table `produit`
 --
 
 CREATE TABLE `produit` (
@@ -421,7 +384,7 @@ CREATE TABLE `produit` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `produit`
+-- Déchargement des données de la table `produit`
 --
 
 INSERT INTO `produit` (`produit_id`, `produit_nom`, `produit_libCour`, `produit_libLong`, `prix_uni`, `tva`, `produit_photo`, `fournisseur_id`, `categorie_id`) VALUES
@@ -459,8 +422,8 @@ INSERT INTO `produit` (`produit_id`, `produit_nom`, `produit_libCour`, `produit_
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `pro_four`
--- (See below for the actual view)
+-- Doublure de structure pour la vue `pro_four`
+-- (Voir ci-dessous la vue réelle)
 --
 CREATE TABLE `pro_four` (
 `produit_nom` varchar(50)
@@ -470,7 +433,7 @@ CREATE TABLE `pro_four` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `stock`
+-- Structure de la table `stock`
 --
 
 CREATE TABLE `stock` (
@@ -483,39 +446,39 @@ CREATE TABLE `stock` (
 -- --------------------------------------------------------
 
 --
--- Structure for view `pro_four`
+-- Structure de la vue `pro_four`
 --
 DROP TABLE IF EXISTS `pro_four`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `pro_four`  AS SELECT `produit`.`produit_nom` AS `produit_nom`, `fournisseur`.`fournisseur_nom` AS `fournisseur_nom` FROM (`produit` join `fournisseur`) WHERE `produit`.`fournisseur_id` = `fournisseur`.`fournisseur_id` ;
 
 --
--- Indexes for dumped tables
+-- Index pour les tables déchargées
 --
 
 --
--- Indexes for table `affecte`
+-- Index pour la table `affecte`
 --
 ALTER TABLE `affecte`
   ADD PRIMARY KEY (`id_commande`,`stock_id`),
   ADD KEY `stock_id` (`stock_id`);
 
 --
--- Indexes for table `appartient`
+-- Index pour la table `appartient`
 --
 ALTER TABLE `appartient`
   ADD PRIMARY KEY (`produit_id`,`categorie_id`),
   ADD KEY `categorie_id` (`categorie_id`);
 
 --
--- Indexes for table `categorie`
+-- Index pour la table `categorie`
 --
 ALTER TABLE `categorie`
   ADD PRIMARY KEY (`categorie_id`),
   ADD KEY `categorie_id_1` (`categorie_id_1`);
 
 --
--- Indexes for table `client`
+-- Index pour la table `client`
 --
 ALTER TABLE `client`
   ADD PRIMARY KEY (`id_client`),
@@ -523,61 +486,41 @@ ALTER TABLE `client`
   ADD KEY `id_coefficiant` (`id_coefficiant`);
 
 --
--- Indexes for table `coefficiant`
---
-ALTER TABLE `coefficiant`
-  ADD PRIMARY KEY (`id_coefficiant`);
-
---
--- Indexes for table `commande`
+-- Index pour la table `commande`
 --
 ALTER TABLE `commande`
   ADD PRIMARY KEY (`id_commande`),
   ADD KEY `id_client` (`id_client`);
 
 --
--- Indexes for table `commande_ligne`
+-- Index pour la table `commande_ligne`
 --
 ALTER TABLE `commande_ligne`
   ADD PRIMARY KEY (`produit_id`,`id_commande`),
   ADD KEY `id_commande` (`id_commande`);
 
 --
--- Indexes for table `commercial`
+-- Index pour la table `commercial`
 --
 ALTER TABLE `commercial`
   ADD PRIMARY KEY (`id_commercial`);
 
 --
--- Indexes for table `contient`
+-- Index pour la table `contient`
 --
 ALTER TABLE `contient`
   ADD PRIMARY KEY (`produit_id`,`id_commande`),
   ADD KEY `id_commande` (`id_commande`);
 
 --
--- Indexes for table `declanche`
---
-ALTER TABLE `declanche`
-  ADD PRIMARY KEY (`facture_id`,`id_livraison`),
-  ADD KEY `id_livraison` (`id_livraison`);
-
---
--- Indexes for table `determine`
---
-ALTER TABLE `determine`
-  ADD PRIMARY KEY (`id_livraison`,`id_commande`),
-  ADD KEY `id_commande` (`id_commande`);
-
---
--- Indexes for table `existe`
+-- Index pour la table `existe`
 --
 ALTER TABLE `existe`
   ADD PRIMARY KEY (`produit_id`,`stock_id`),
   ADD KEY `stock_id` (`stock_id`);
 
 --
--- Indexes for table `facture`
+-- Index pour la table `facture`
 --
 ALTER TABLE `facture`
   ADD PRIMARY KEY (`facture_id`),
@@ -585,26 +528,27 @@ ALTER TABLE `facture`
   ADD KEY `id_commande` (`id_commande`);
 
 --
--- Indexes for table `fournisseur`
+-- Index pour la table `fournisseur`
 --
 ALTER TABLE `fournisseur`
   ADD PRIMARY KEY (`fournisseur_id`);
 
 --
--- Indexes for table `livraison`
+-- Index pour la table `livraison`
 --
 ALTER TABLE `livraison`
-  ADD PRIMARY KEY (`id_livraison`);
+  ADD PRIMARY KEY (`id_livraison`),
+  ADD KEY `id_commande` (`id_commande`);
 
 --
--- Indexes for table `passe`
+-- Index pour la table `passe`
 --
 ALTER TABLE `passe`
   ADD PRIMARY KEY (`id_client`,`id_commande`),
   ADD KEY `id_commande` (`id_commande`);
 
 --
--- Indexes for table `produit`
+-- Index pour la table `produit`
 --
 ALTER TABLE `produit`
   ADD PRIMARY KEY (`produit_id`),
@@ -612,156 +556,130 @@ ALTER TABLE `produit`
   ADD KEY `categorie_id` (`categorie_id`);
 
 --
--- Indexes for table `stock`
+-- Index pour la table `stock`
 --
 ALTER TABLE `stock`
   ADD PRIMARY KEY (`stock_id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT pour les tables déchargées
 --
 
 --
--- AUTO_INCREMENT for table `appartient`
+-- AUTO_INCREMENT pour la table `appartient`
 --
 ALTER TABLE `appartient`
   MODIFY `produit_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `categorie`
+-- AUTO_INCREMENT pour la table `categorie`
 --
 ALTER TABLE `categorie`
   MODIFY `categorie_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
--- AUTO_INCREMENT for table `coefficiant`
---
-ALTER TABLE `coefficiant`
-  MODIFY `id_coefficiant` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `commande`
+-- AUTO_INCREMENT pour la table `commande`
 --
 ALTER TABLE `commande`
   MODIFY `id_commande` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
--- AUTO_INCREMENT for table `declanche`
---
-ALTER TABLE `declanche`
-  MODIFY `facture_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `determine`
---
-ALTER TABLE `determine`
-  MODIFY `id_livraison` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `facture`
+-- AUTO_INCREMENT pour la table `facture`
 --
 ALTER TABLE `facture`
   MODIFY `facture_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
--- AUTO_INCREMENT for table `fournisseur`
+-- AUTO_INCREMENT pour la table `fournisseur`
 --
 ALTER TABLE `fournisseur`
   MODIFY `fournisseur_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
--- AUTO_INCREMENT for table `produit`
+-- AUTO_INCREMENT pour la table `produit`
 --
 ALTER TABLE `produit`
   MODIFY `produit_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
--- AUTO_INCREMENT for table `stock`
+-- AUTO_INCREMENT pour la table `stock`
 --
 ALTER TABLE `stock`
   MODIFY `stock_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- Constraints for dumped tables
+-- Contraintes pour les tables déchargées
 --
 
 --
--- Constraints for table `affecte`
+-- Contraintes pour la table `affecte`
 --
 ALTER TABLE `affecte`
   ADD CONSTRAINT `affecte_ibfk_1` FOREIGN KEY (`id_commande`) REFERENCES `commande` (`id_commande`),
   ADD CONSTRAINT `affecte_ibfk_2` FOREIGN KEY (`stock_id`) REFERENCES `stock` (`stock_id`);
 
 --
--- Constraints for table `appartient`
+-- Contraintes pour la table `appartient`
 --
 ALTER TABLE `appartient`
   ADD CONSTRAINT `appartient_ibfk_1` FOREIGN KEY (`produit_id`) REFERENCES `produit` (`produit_id`),
   ADD CONSTRAINT `appartient_ibfk_2` FOREIGN KEY (`categorie_id`) REFERENCES `categorie` (`categorie_id`);
 
 --
--- Constraints for table `categorie`
+-- Contraintes pour la table `categorie`
 --
 ALTER TABLE `categorie`
   ADD CONSTRAINT `categorie_ibfk_1` FOREIGN KEY (`categorie_id_1`) REFERENCES `categorie` (`categorie_id`);
 
 --
--- Constraints for table `client`
+-- Contraintes pour la table `client`
 --
 ALTER TABLE `client`
   ADD CONSTRAINT `client_ibfk_1` FOREIGN KEY (`id_commercial`) REFERENCES `commercial` (`id_commercial`),
   ADD CONSTRAINT `client_ibfk_2` FOREIGN KEY (`id_coefficiant`) REFERENCES `coefficiant` (`id_coefficiant`);
 
 --
--- Constraints for table `commande`
+-- Contraintes pour la table `commande`
 --
 ALTER TABLE `commande`
   ADD CONSTRAINT `commande_ibfk_1` FOREIGN KEY (`id_client`) REFERENCES `client` (`id_client`);
 
 --
--- Constraints for table `commande_ligne`
+-- Contraintes pour la table `commande_ligne`
 --
 ALTER TABLE `commande_ligne`
   ADD CONSTRAINT `commande_ligne_ibfk_1` FOREIGN KEY (`produit_id`) REFERENCES `produit` (`produit_id`),
   ADD CONSTRAINT `commande_ligne_ibfk_2` FOREIGN KEY (`id_commande`) REFERENCES `commande` (`id_commande`);
 
 --
--- Constraints for table `contient`
+-- Contraintes pour la table `contient`
 --
 ALTER TABLE `contient`
   ADD CONSTRAINT `contient_ibfk_1` FOREIGN KEY (`produit_id`) REFERENCES `produit` (`produit_id`),
   ADD CONSTRAINT `contient_ibfk_2` FOREIGN KEY (`id_commande`) REFERENCES `commande` (`id_commande`);
 
 --
--- Constraints for table `declanche`
---
-ALTER TABLE `declanche`
-  ADD CONSTRAINT `declanche_ibfk_1` FOREIGN KEY (`facture_id`) REFERENCES `facture` (`facture_id`),
-  ADD CONSTRAINT `declanche_ibfk_2` FOREIGN KEY (`id_livraison`) REFERENCES `livraison` (`id_livraison`);
-
---
--- Constraints for table `determine`
---
-ALTER TABLE `determine`
-  ADD CONSTRAINT `determine_ibfk_1` FOREIGN KEY (`id_livraison`) REFERENCES `livraison` (`id_livraison`),
-  ADD CONSTRAINT `determine_ibfk_2` FOREIGN KEY (`id_commande`) REFERENCES `commande` (`id_commande`);
-
---
--- Constraints for table `existe`
+-- Contraintes pour la table `existe`
 --
 ALTER TABLE `existe`
   ADD CONSTRAINT `existe_ibfk_1` FOREIGN KEY (`produit_id`) REFERENCES `produit` (`produit_id`),
   ADD CONSTRAINT `existe_ibfk_2` FOREIGN KEY (`stock_id`) REFERENCES `stock` (`stock_id`);
 
 --
--- Constraints for table `passe`
+-- Contraintes pour la table `livraison`
+--
+ALTER TABLE `livraison`
+  ADD CONSTRAINT `id_commande` FOREIGN KEY (`id_commande`) REFERENCES `commande` (`id_commande`);
+
+--
+-- Contraintes pour la table `passe`
 --
 ALTER TABLE `passe`
   ADD CONSTRAINT `passe_ibfk_1` FOREIGN KEY (`id_client`) REFERENCES `client` (`id_client`),
   ADD CONSTRAINT `passe_ibfk_2` FOREIGN KEY (`id_commande`) REFERENCES `commande` (`id_commande`);
 
 --
--- Constraints for table `produit`
+-- Contraintes pour la table `produit`
 --
 ALTER TABLE `produit`
   ADD CONSTRAINT `produit_ibfk_1` FOREIGN KEY (`fournisseur_id`) REFERENCES `fournisseur` (`fournisseur_id`),
