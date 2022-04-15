@@ -105,14 +105,14 @@ CREATE TABLE `client` (
   `client_categorie` varchar(50) NOT NULL,
   `adresse_liv_client` varchar(50) NOT NULL,
   `id_commercial` int(11) NOT NULL,
-  `id_coefficiant` int(11) NOT NULL
+  `coefficiant` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Déchargement des données de la table `client`
 --
 
-INSERT INTO `client` (`id_client`, `client_nom`, `client_prenom`, `client_sexe`, `client_adresse`, `client_ville`, `client_telephone`, `newsletter`, `client_codp`, `client_categorie`, `adresse_liv_client`, `id_commercial`, `id_coefficiant`) VALUES
+INSERT INTO `client` (`id_client`, `client_nom`, `client_prenom`, `client_sexe`, `client_adresse`, `client_ville`, `client_telephone`, `newsletter`, `client_codp`, `client_categorie`, `adresse_liv_client`, `id_commercial`, `coefficiant`) VALUES
 ('1', 'Hammett', 'Bonner', 'f', 'Ap #276-1431 Elementum, Avenue', 'Donetsk', '1-885-359-8284', 1, 253116, '1', '2115 Neque Av.', 1, 1),
 ('10', 'Teagan', 'Villarreal', 'm', 'Ap #434-4500 Cubilia Street', 'Enkhuizen', '114-9281', 0, 26563, '2', 'Ap #469-4811 Et, St.', 3, 1),
 ('11', 'Thaddeus', 'Davidson', 'm', '253-7347 Auctor St.', 'Bronnoysund', '1-663-203-0764', 1, 665991, '1', '352-4626 Magna Avenue', 3, 2),
@@ -483,7 +483,7 @@ ALTER TABLE `categorie`
 ALTER TABLE `client`
   ADD PRIMARY KEY (`id_client`),
   ADD KEY `id_commercial` (`id_commercial`),
-  ADD KEY `id_coefficiant` (`id_coefficiant`);
+  ADD KEY `coefficiant` (`coefficiant`);
 
 --
 -- Index pour la table `commande`
@@ -636,7 +636,7 @@ ALTER TABLE `categorie`
 --
 ALTER TABLE `client`
   ADD CONSTRAINT `client_ibfk_1` FOREIGN KEY (`id_commercial`) REFERENCES `commercial` (`id_commercial`),
-  ADD CONSTRAINT `client_ibfk_2` FOREIGN KEY (`id_coefficiant`) REFERENCES `coefficiant` (`id_coefficiant`);
+  ADD CONSTRAINT `client_ibfk_2` FOREIGN KEY (`coefficiant`) REFERENCES `coefficiant` (`coefficiant`);
 
 --
 -- Contraintes pour la table `commande`

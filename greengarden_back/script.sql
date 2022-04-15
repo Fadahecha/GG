@@ -32,7 +32,6 @@ FROM produit, fournisseur
 WHERE produit.fournisseur_id = fournisseur.fournisseur_id;
 
 -- 1.2.4 – Pour la sécurité, vous devez prévoir plusieurs profils de connexion et décliner les autorisations nécessaires
-
 Visiteur
 CREATE USER 'visiteur' IDENTIFIED BY '1234'
 GRANT SELECT ON produit TO 'visiteur';
